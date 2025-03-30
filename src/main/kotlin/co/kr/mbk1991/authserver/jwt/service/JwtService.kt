@@ -1,7 +1,7 @@
-package co.kr.mbk1991.authserver.auth.service
+package co.kr.mbk1991.authserver.jwt.service
 
-import co.kr.mbk1991.authserver.auth.dto.JsonWebToken
-import co.kr.mbk1991.authserver.auth.dto.User
+import co.kr.mbk1991.authserver.jwt.dto.JsonWebToken
+import co.kr.mbk1991.authserver.user.dto.User
 import org.springframework.stereotype.Service
 
 @Service

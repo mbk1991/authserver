@@ -1,7 +1,7 @@
 package co.kr.mbk1991.authserver.util
 
-import co.kr.mbk1991.authserver.auth.dto.KakaoToken
-import co.kr.mbk1991.authserver.auth.dto.User
+import co.kr.mbk1991.authserver.oauth.dto.KakaoToken
+import co.kr.mbk1991.authserver.user.dto.User
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
@@ -13,8 +13,16 @@ object RestUtil {
     private val restTemplate: RestTemplate = RestTemplate()
 
     fun get(url: String): String {
-       return restTemplate.getForObject(url)
+        return restTemplate.getForObject(url)
     }
+
+    fun <T> post(url: String, data: String, contentType: MediaType, responseType: Class<T>): ResponseEntity<T> {
+        val header = org.springframework.http.HttpHeaders()
+        header.contentType = contentType
+        val request = HttpEntity(data, header)
+        return restTemplate.exchange(url, HttpMethod.POST, request, responseType)
+    }
+
 
     fun kakaoTokenRequest(url: String, data: String, contentType: MediaType): ResponseEntity<KakaoToken> {
         val header = org.springframework.http.HttpHeaders()

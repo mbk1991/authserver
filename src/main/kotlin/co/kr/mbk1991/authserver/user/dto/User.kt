@@ -1,4 +1,4 @@
-package co.kr.mbk1991.authserver.auth.dto
+package co.kr.mbk1991.authserver.user.dto
 
 data class User(
     val idx: Long,
