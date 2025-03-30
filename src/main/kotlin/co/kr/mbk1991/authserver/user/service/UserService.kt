@@ -20,7 +20,7 @@ class UserService(val oAuthProviderRoutingService: OAuthProviderRoutingService,
         println(oAuthToken)
         val userInfo = oAuthProviderRoutingService.getUserInfo(authCode.provider, oAuthToken)
         println(userInfo)
-        //(userId && loginMethod) 로 idx를 검색(식별자) insert or upadate 진행하고 jwt 발행
+        //todo: (userId && loginMethod) 로 idx를 검색(식별자) 유저 테이블에 insert or upadate 진행하고 jwt 발행
 
 
 
