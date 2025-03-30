@@ -5,20 +5,23 @@ import co.kr.mbk1991.authserver.oauth.dto.KakaoToken
 import co.kr.mbk1991.authserver.user.dto.User
 import co.kr.mbk1991.authserver.jwt.service.JwtService
 import co.kr.mbk1991.authserver.oauth.dto.AuthCode
+import co.kr.mbk1991.authserver.oauth.service.OAuthProviderRoutingService
 import co.kr.mbk1991.authserver.util.RestUtil
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(val jwtService: JwtService) {
+class UserService(val oAuthProviderRoutingService: OAuthProviderRoutingService,
+                  val jwtService: JwtService) {
+    fun redirectLoginPage(provider: String): String {
+        return oAuthProviderRoutingService.redirectLoginPage(provider)
+    }
     fun login(authCode: AuthCode): JsonWebToken {
-        return JsonWebToken("","")
+        val oAuthToken = oAuthProviderRoutingService.getToken(authCode.provider, authCode.auth_code)
+        println(oAuthToken)
+        val userInfo = oAuthProviderRoutingService.getUserInfo(authCode.provider, oAuthToken)
+        println(userInfo)
+        return JsonWebToken("", "")
     }
-
-    private fun getKakaoUserInfo(kakaoToken: KakaoToken?): User {
-        return RestUtil.kakaoUserInfoRequest(kakaoToken)
-    }
-
-    private fun signin(user: User) {
-
-    }
+    fun logout() {}
+    private fun signin(user: User) {}
 }
