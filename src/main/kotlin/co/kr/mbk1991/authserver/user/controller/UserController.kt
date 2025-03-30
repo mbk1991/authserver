@@ -8,18 +8,20 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 class UserController(
-    val userService: UserService,
+    val userService: UserService
 ) {
     @ResponseBody
     @GetMapping("/ping")
     fun ping(): String {
         return "pong"
     }
+
     @CrossOrigin
     @GetMapping("/api/auth/{provider}")
     fun redirectOAuthLoginPage(@PathVariable("provider") provider: String): String {
         return userService.redirectLoginPage(provider)
     }
+
     @CrossOrigin
     @PostMapping("/api/auth/login")
     fun login(@RequestBody authCode: AuthCode): JsonWebToken {

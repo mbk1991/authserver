@@ -1,7 +1,7 @@
 package co.kr.mbk1991.authserver.user.dto
 
 data class User(
-    val idx: Long,
+    val idx: Long?,
     val userId: String,
     val email: String?,
     val nickName: String?,
@@ -9,5 +9,6 @@ data class User(
     val loginMethod: String?,
     val listOpen: Int?,
     val createAt: String?,
-    val updateAt: String?
+    val updateAt: String?,
+    val provider: String?
 )

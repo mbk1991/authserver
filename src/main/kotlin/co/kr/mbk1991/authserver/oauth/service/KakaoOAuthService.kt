@@ -47,7 +47,7 @@ class KakaoOAuthService {
     }
 
     fun getUserInfo(oAuthToken: OAuthToken): User {
-        return setUser(RestUtil.post(
+        return mappingUserObject(RestUtil.post(
             url = USER_INFO_URL,
             data = "",
             contentType = MediaType.APPLICATION_FORM_URLENCODED,
@@ -56,9 +56,19 @@ class KakaoOAuthService {
         ).body!!)
     }
 
-    private fun setUser(body: KakaoAccountResponse): User {
-        TODO("Not yet implemented")
-
+    private fun mappingUserObject(info: KakaoAccountResponse): User {
+        return User(
+            idx = null,
+            userId = info.id.toString(),
+            email = info.kakao_account?.email,
+            nickName = info.kakao_account?.profile?.nickname,
+            profilePicture = info.kakao_account?.profile?.profile_image_url,
+            provider = "kakao",
+            loginMethod = "",
+            listOpen = 0,
+            createAt = "",
+            updateAt = ""
+        )
     }
 
     fun logout(provider: String) {
