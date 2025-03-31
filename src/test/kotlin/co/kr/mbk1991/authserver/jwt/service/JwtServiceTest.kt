@@ -27,49 +27,63 @@ class JwtServiceTest {
     }
 
     @Test
-    fun 파싱테스트_시그니쳐(){
-        var signatureErrToken = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDM0NjE4MzIsImV4cCI6MTc0MzQ2NTQzMiwidXNlcklkIjoiMSJ9.cyNNd2xOTOG1Pn4htH5ShxgtyTPEzejn0BAvkSsEbBAs"
+    fun 파싱테스트_시그니쳐() {
+        var signatureErrToken =
+            "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDM0NjE4MzIsImV4cCI6MTc0MzQ2NTQzMiwidXNlcklkIjoiMSJ9.cyNNd2xOTOG1Pn4htH5ShxgtyTPEzejn0BAvkSsEbBAs"
 
         var jwtService = JwtService()
         var exType = ""
-        try{
+        try {
             jwtService.parseToken(signatureErrToken)
-        }catch(e: SignatureException){
+        } catch (e: SignatureException) {
             exType = "SignatureException"
-        }catch(e: ExpiredJwtException){
+        } catch (e: ExpiredJwtException) {
             exType = "ExpiredJwtException"
-        }catch(e: UnsupportedJwtException){
+        } catch (e: UnsupportedJwtException) {
             exType = "UnsupportedJwtException"
-        }catch(e: MalformedJwtException){
+        } catch (e: MalformedJwtException) {
             exType = "MalformedJwtException"
-        }catch(e: PrematureJwtException){
+        } catch (e: PrematureJwtException) {
             exType = "PrematureJwtException"
-        }catch(e: ClaimJwtException){
+        } catch (e: ClaimJwtException) {
             exType = "ClaimJwtException"
         }
         assert(exType.equals("SignatureException"))
     }
 
     @Test
-    fun 파싱테스트_유효기간초과(){
-        var signatureErrToken = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDM0NjI5MDksImV4cCI6MTc0MzQ1OTMwOSwidXNlcklkIjoiMSJ9.Y5Aq5ooEuCm-_AJrGlcEqAnM_PqI-NQ4EnfIBoqiEm4"
+    fun 파싱테스트_유효기간초과() {
+        var signatureErrToken =
+            "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDM0NjI5MDksImV4cCI6MTc0MzQ1OTMwOSwidXNlcklkIjoiMSJ9.Y5Aq5ooEuCm-_AJrGlcEqAnM_PqI-NQ4EnfIBoqiEm4"
         var jwtService = JwtService()
         var exType = ""
-        try{
+        try {
             jwtService.parseToken(signatureErrToken)
-        }catch(e: SignatureException){
+        } catch (e: SignatureException) {
             exType = "SignatureException"
-        }catch(e: ExpiredJwtException){
+        } catch (e: ExpiredJwtException) {
             exType = "ExpiredJwtException"
-        }catch(e: UnsupportedJwtException){
+        } catch (e: UnsupportedJwtException) {
             exType = "UnsupportedJwtException"
-        }catch(e: MalformedJwtException){
+        } catch (e: MalformedJwtException) {
             exType = "MalformedJwtException"
-        }catch(e: PrematureJwtException){
+        } catch (e: PrematureJwtException) {
             exType = "PrematureJwtException"
-        }catch(e: ClaimJwtException){
+        } catch (e: ClaimJwtException) {
             exType = "ClaimJwtException"
         }
         assert(exType.equals("ExpiredJwtException"))
+    }
+
+    @Test
+    fun 파싱테스트_페이로드() {
+        var signatureErrToken =
+            "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NDM0NjM5MjMsImV4cCI6MTc0MzQ2NzUyMywidXNlcklkIjoiMSJ9.DdNihuLfXNEDPVZeBrcOmc1CPUP1QMvVhbZkRlv04Z8"
+        var jwtService = JwtService()
+        val jwtPayload = jwtService.parseToken(signatureErrToken)
+
+        assert(jwtPayload.exp.equals("Tue Apr 01 09:32:03 KST 2025"))
+        assert(jwtPayload.iat.equals("Tue Apr 01 08:32:03 KST 2025"))
+        assert(jwtPayload.userId.equals("1"))
     }
 }

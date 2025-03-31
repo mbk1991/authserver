@@ -1,5 +1,6 @@
 package co.kr.mbk1991.authserver.jwt.service
 
+import co.kr.mbk1991.authserver.jwt.dto.JwtPayload
 import io.jsonwebtoken.Jwt
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
@@ -39,7 +40,7 @@ class JwtService {
             .compact()
     }
 
-    fun generateRefreshToken(): String{
+    fun generateRefreshToken(): String {
         var exp = Date(
             System.currentTimeMillis() +
                     (accssRefreshExpDay.toInt() * 1_000 * 60 * 60 * 24)
@@ -51,15 +52,19 @@ class JwtService {
             .compact()
     }
 
-    fun parseToken(token: String) {
-        var secretKey = Jwts.SIG.HS512.key().build()
-
+    fun parseToken(token: String): JwtPayload {
         val parseSignedClaims = Jwts.parser()
             .verifyWith(getSecretKey())
             .build()
             .parseSignedClaims(token)
 
-        println(parseSignedClaims.toString())
+        val payload = parseSignedClaims.payload
+
+        return JwtPayload(
+            iat = payload.issuedAt.toString(),
+            exp = payload.expiration.toString(),
+            userId = payload.get("userId").toString()
+        )
     }
 
     private fun getSecretKey(): SecretKey {
